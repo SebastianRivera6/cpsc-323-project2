@@ -1,27 +1,48 @@
-#include vector
+#include <vector>
 #include <string>
+#include <iomanip>
+#include<iostream>
+
 using namespace std;
 
 void shift(string &input, string &output, int counter, string action)
 {
-
+output.push_back(input[0]);
+output.push_back(action[1]);
+input.erase(0,1);
 }
 
-void reduction()
+void reduction(string &input, string &output, int counter, string action)
+{
+//add here
+}
+
+string find_action(int &counter, vector<vector<string>> lrParsingTable, string input)
 {
 
+  string action;
+  for ( int i = 0; i<8; i++)
+    {
+
+    if(lrParsingTable[0][i][0] == input[0])
+      {
+        action = lrParsingTable[counter][i];
+      }
+    }
+    return action;
 }
 
-
-int main
+int main()
 {
   string input;
   string output ="$0";
-  int counter = 0;
+  int counter = 1;
   string action;
+  bool found = false;
 
-  cout<<"enter string"
+  cout<<"enter string: ";
   cin >> input;
+  cout << "State|   Stack    |    Input     |  Action" << endl;
 
   vector<vector<string>> lrParsingTable = {
           {"i", "+", "*", "(", ")", "$", "E", "T", "F"},
@@ -38,29 +59,25 @@ int main
           {"blank", "R3", "R3", "blank", "R3", "R3", "blank", "blank", "blank"},
           {"blank", "R5", "R5", "blank", "R5", "R5", "blank", "blank", "blank"}
       };
-for ( i = 0, i>8; i++)
-  {
 
-  if(lrParsingTable[0][i] == input[0])
-    {
-      action = lrParsingTable[counter][i];
-      break;
-    }
-   else
-    {
-       cout <<  input[0] << " not found in the parsing table."<<endl;
-       break;
-    }
-  }
 
-}
-
+while (input != "$")
+{
+action = find_action(counter,  lrParsingTable, input);
 if (action[0] == 'S')
 {
-shift(string &input, string &output, int counter, string action);
+shift( input,  output,  counter,  action);
+cout << counter-1<<"|   " << output<< "   |"<<"|   " << input<< "   |"<<"|   " << action<< "   |"<<endl;
+counter++;
+
 }
 
-else if (action[0] == 'R')
+ else if (action[0] == 'R')
 {
-  reduction(string &input, string &output, int counter, string action);
+  reduction( input,  output,  counter,  action);
+  cout << counter-1<<"|   " << output<< "   |"<<"|   " << input<< "   |"<<"|   " << action<< "   |"<<endl;
+  counter++;
+}
+
+  }
 }
